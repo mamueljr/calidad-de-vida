@@ -41,42 +41,64 @@ export function guardarRespuestas(seccion, respuestas) {
 
 // Verifica que el encuestadoActual tenga todas las secciones llenas
 function encuestaCompleta(e) {
-  const secciones = ["orientacion", "autodeterminacion", "items", "bienestar", "inclusion"];
-  return (
-    e.registro.id &&
-    secciones.every(seccion =>
-      Array.isArray(e[seccion]) &&
-      e[seccion].length > 0 &&
-      e[seccion].every(r => r !== "")
-    )
-  );
+  const seccionesEsperadas = {
+    orientacion: 13,
+    autodeterminacion: 9,
+    bienestar: 9,
+    inclusion: 9
+  };
+
+  for (const [seccion, cantidad] of Object.entries(seccionesEsperadas)) {
+    const respuestas = e[seccion];
+    if (!Array.isArray(respuestas)) {
+      console.warn(`No es un arreglo: ${seccion}`, respuestas);
+      return false;
+    }
+
+    if (respuestas.length !== cantidad) {
+      console.warn(`Cantidad incorrecta en ${seccion}. Esperado: ${cantidad}, Recibido: ${respuestas.length}`);
+      return false;
+    }
+
+    if (respuestas.some(r => r === "" || r === undefined || r === null)) {
+      console.warn(`Respuestas vacías en ${seccion}:`, respuestas);
+      return false;
+    }
+  }
+
+  const reg = e.registro;
+  if (!reg || !reg.id || !reg.nombre || !reg.fecha) {
+    console.warn("Registro incompleto:", reg);
+    return false;
+  }
+
+  return true;
 }
+
+
+
 
 // Finalizar encuesta, guardar y exportar CSV de inmediato
 export function finalizarEncuestado() {
-  const actual = datosEncuesta.encuestadoActual;
-
-  if (!encuestaCompleta(actual)) {
+  if (!encuestaCompleta(datosEncuesta.encuestadoActual)) {
     alert("⚠️ La encuesta no está completa. Asegúrate de llenar todos los módulos.");
     return;
   }
 
-  datosEncuesta.encuestados.push(structuredClone(actual));
+  // Guardar al historial
+  datosEncuesta.encuestados.push({ ...datosEncuesta.encuestadoActual });
 
-  // Limpiar para el siguiente
-  datosEncuesta.encuestadoActual = {
-    registro: {},
-    orientacion: [],
-    autodeterminacion: [],
-    items: [],
-    bienestar: [],
-    inclusion: []
-  };
+  // Limpiar al actual
+  datosEncuesta.encuestadoActual = null;
 
-  guardarEnLocalStorage();
-  alert("✅ Encuesta finalizada y guardada. Se descargará el archivo CSV.");
+  // Guardar en localStorage
+  localStorage.setItem("datosEncuesta", JSON.stringify(datosEncuesta));
+
+  alert("✅ Encuesta finalizada y guardada correctamente.");
   exportarTodoCSV();
+  window.location.href = "../index.html";
 }
+
 
 // Exportar todas las encuestas completas como archivo CSV
 export function exportarTodoCSV() {
@@ -88,7 +110,6 @@ export function exportarTodoCSV() {
   const preguntasPorSeccion = {
     orientacion: 13,
     autodeterminacion: 9,
-    items: 3,
     bienestar: 9,
     inclusion: 9
   };
@@ -97,7 +118,6 @@ export function exportarTodoCSV() {
     "ID", "Nombre", "Fecha", "Sexo", "Procedencia",
     ...Array.from({ length: preguntasPorSeccion.orientacion }, (_, i) => `Orientación_P${i + 1}`),
     ...Array.from({ length: preguntasPorSeccion.autodeterminacion }, (_, i) => `Autodeterminación_P${i + 1}`),
-    ...Array.from({ length: preguntasPorSeccion.items }, (_, i) => `Items_P${i + 1}`),
     ...Array.from({ length: preguntasPorSeccion.bienestar }, (_, i) => `Bienestar_P${i + 1}`),
     ...Array.from({ length: preguntasPorSeccion.inclusion }, (_, i) => `Inclusión_P${i + 1}`)
   ];
@@ -113,7 +133,6 @@ export function exportarTodoCSV() {
       e.registro.procedencia || '',
       ...(e.orientacion || []).slice(0, preguntasPorSeccion.orientacion),
       ...(e.autodeterminacion || []).slice(0, preguntasPorSeccion.autodeterminacion),
-      ...(e.items || []).slice(0, preguntasPorSeccion.items),
       ...(e.bienestar || []).slice(0, preguntasPorSeccion.bienestar),
       ...(e.inclusion || []).slice(0, preguntasPorSeccion.inclusion)
     ];
@@ -126,3 +145,5 @@ export function exportarTodoCSV() {
   link.download = 'encuestas_completas.csv';
   link.click();
 }
+
+

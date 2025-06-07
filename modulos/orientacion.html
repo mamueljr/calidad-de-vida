@@ -7,17 +7,6 @@
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
-    <!-- POPUP INSTRUCCIONES CARAS -->
-    <div class="popup" id="popupCaras" style="display: none">
-      <div class="popup-content">
-        <img src="../img/caras.png" alt="Caritas" class="caritas-img" />
-        <div class="popup-boton">
-          <button onclick="cerrarPopupCaras()">Aceptar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- CUESTIONARIO -->
     <div class="container">
       <h2 class="titulo-evaluacion">
         Cuestionario de Orientación a la Tarea y al Ego (TEOSQ)
@@ -30,7 +19,7 @@
       </div>
 
       <form id="form-orientacion">
-        <!-- Las preguntas se cargan por JS -->
+        <!-- Preguntas se cargan por JS -->
       </form>
 
       <div class="centrado">
@@ -47,25 +36,35 @@
       </div>
     </div>
 
+    <!-- POPUP CARAS -->
+    <div class="popup" id="popupCaras" style="display: none">
+      <div class="popup-content">
+        <img src="../img/caras.png" alt="Caritas" class="caritas-img" />
+        <div class="popup-boton">
+          <button onclick="cerrarPopupCaras()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module">
       import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
 
       cargarDatosGuardados();
 
       const preguntas = [
-        "Soy el único(a) que puede hacer las cosas correctamente.",
-        "Aprendo a hacer cosas nuevas.",
-        "Soy mejor que mis amigos(as).",
-        "Aprendo algo que es divertido.",
-        "Los demás se equivocan, pero yo no.",
-        "Aprendo una nueva habilidad al trabajar duro.",
-        "Trabajo muy duro.",
-        "Anoto la mayor cantidad de puntos o goles en un juego.",
-        "Lo que aprendo me motiva a practicar más.",
-        "Soy el/la mejor.",
-        "Aprendo algo que me hace sentir bien.",
-        "Doy lo mejor de mí.",
-        "No comprendo el ítem.", // solo como texto de referencia en opciones
+        "1. Soy el único(a) que puede hacer las cosas correctamente.",
+        "2. Aprendo a hacer cosas nuevas.",
+        "3. Soy mejor que mis amigos(as).",
+        "4. Aprendo algo que es divertido.",
+        "5. Los demás se equivocan, pero yo no.",
+        "6. Aprendo una nueva habilidad al trabajar duro.",
+        "7. Trabajo muy duro.",
+        "8. Anoto la mayor cantidad de puntos o goles en un juego.",
+        "9. Lo que aprendo me motiva a practicar más.",
+        "10. Soy el/la mejor.",
+        "11. Aprendo algo que me hace sentir bien.",
+        "12. Doy lo mejor de mí.",
+        "13. Siento que tengo éxito cuando mejoro en lo que hago.",
       ];
 
       const opciones = [
@@ -74,17 +73,17 @@
         { texto: "3", valor: 3 },
         { texto: "4", valor: 4 },
         { texto: "5", valor: 5 },
-        { texto: "❓", valor: 6 },
+        { texto: "❓", valor: 6 }, // No comprende el ítem
       ];
 
       const form = document.getElementById("form-orientacion");
 
-      preguntas.slice(0, 12).forEach((texto, index) => {
+      preguntas.forEach((texto, index) => {
         const div = document.createElement("div");
         div.className = "pregunta";
 
         const p = document.createElement("p");
-        p.textContent = `${index + 1}. ${texto}`;
+        p.textContent = texto;
         div.appendChild(p);
 
         const opcionesDiv = document.createElement("div");
@@ -112,11 +111,9 @@
         const respuestas = [];
         let incompletas = false;
 
-        document.querySelectorAll(".opciones").forEach((grupo, i) => {
+        document.querySelectorAll(".opciones").forEach((grupo) => {
           const seleccionado = grupo.querySelector("button.activo");
-          if (!seleccionado) {
-            incompletas = true;
-          }
+          if (!seleccionado) incompletas = true;
           respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
         });
 

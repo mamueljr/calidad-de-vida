@@ -11,7 +11,7 @@
       <h2 class="titulo-evaluacion">Ítems de práctica</h2>
 
       <form id="form-items">
-        <!-- Preguntas se insertan con JS -->
+        <!-- Preguntas generadas con JS -->
       </form>
 
       <div class="centrado">
@@ -77,23 +77,13 @@
 
       window.guardarYContinuar = function () {
         const respuestas = [];
-        let incompletas = false;
 
-        document.querySelectorAll(".opciones").forEach((grupo, i) => {
+        document.querySelectorAll(".opciones").forEach((grupo) => {
           const seleccionado = grupo.querySelector("button.activo");
-          if (!seleccionado) incompletas = true;
           respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
         });
 
-        if (incompletas) {
-          if (
-            !confirm(
-              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
-            )
-          )
-            return;
-        }
-
+        // Guardar aunque no haya respuestas completas (porque es opcional)
         guardarRespuestas("items", respuestas);
         window.location.href = "autodeterminacion.html";
       };
