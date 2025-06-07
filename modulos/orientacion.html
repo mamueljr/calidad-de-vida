@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cuestionario de Orientación</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <!-- POPUP DE INSTRUCCIONES -->
+    <div id="popup-orientacion" class="popup">
+      <div class="popup-content">
+        <h2>
+          <span class="titulo-popup"
+            >CUESTIONARIO DE ORIENTACIÓN A LA TAREA Y AL EGO EN EL DEPORTE
+            ADAPTADO PARA DISCAPACIDAD INTELECTUAL</span
+          >
+        </h2>
+        <p>
+          <strong
+            >(TASK AND EGO ORIENTATION IN SPORT QUESTIONNAIRE - TEOSQ)</strong
+          >
+          <br /><br />
+          <strong>INSTRUCCIONES:</strong> Te voy a leer un enunciado, indica qué
+          tan de acuerdo estás. También puedes responder basándote en estas
+          caritas:
+        </p>
+        <img
+          src="../img/caras.png"
+          alt="Caritas de opciones"
+          class="caritas-img"
+        />
+        <div class="popup-boton">
+          <button onclick="cerrarPopupOrientacion()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POPUP CARAS (se carga después del principal) -->
+    <div class="popup" id="popupCaras" style="display: none">
+      <div class="popup-content">
+        <img src="../img/caras.png" alt="Caritas" class="caritas-img" />
+        <div class="popup-boton">
+          <button onclick="cerrarPopupCaras()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUESTIONARIO -->
+    <div id="contenido-orientacion" style="display: none">
+      <div class="container">
+        <div class="centrado">
+          <button class="btn-caras" onclick="mostrarPopupCaras()">
+            Mostrar Caras
+          </button>
+        </div>
+
+        <h2>
+          En el deporte, me siento más orgulloso(a) de mí mismo(a) cuando...
+        </h2>
+
+        <form id="form-orientacion">
+          <!-- Preguntas se inyectan por JS -->
+        </form>
+
+        <div class="button-group-horizontal">
+          <button
+            type="button"
+            class="btn-guardar"
+            onclick="exportarOrientacion()"
+          >
+            Exportar a CSV
+          </button>
+          <button
+            type="button"
+            class="btn-regresar"
+            onclick="window.location.href='../index.html'"
+          >
+            Volver al Menú Principal
+          </button>
+          <button
+            type="button"
+            class="btn-continuar"
+            onclick="window.location.href='evaluacion.html'"
+          >
+            Continuar a Evaluación Integral
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../js/orientacion.js"></script>
+  </body>
+</html>

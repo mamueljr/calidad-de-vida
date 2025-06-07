@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú Principal</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="popup">
+      <div id="popup-content">
+        <h2>ASENTIMIENTO INFORMADO</h2>
+        <p>
+          Hola mi nombre es __________________________ (nombre del investigador)
+          y quiero invitarte a participar en el proyecto de investigación
+          titulado:
+          <strong
+            >El deporte adaptado como medio para mejorar la calidad de vida en
+            personas con discapacidad intelectual.</strong
+          >
+          <br /><br />
+          El objetivo es conocer los beneficios que tienes cuando haces
+          ejercicio y/o vienes a entrenar. No tienes que contestar ahora, puedes
+          consultarlo con tus papás. En caso de decidir participar, solo tienes
+          que responder unas preguntas.
+          <br /><br />
+          La participación es voluntaria y puede abandonarse en cualquier
+          momento sin repercusión alguna. Los participantes y tutores tienen el
+          derecho de conocer los resultados derivados de este estudio.
+          <br /><br />
+          Pon una X en la manita que corresponde.
+          <br /><br />
+          Yo _____________________________________ (nombre del participante).
+        </p>
+        <div class="botones-popup">
+          <img src="img/asentimiento.png" alt="Manos" />
+          <br />
+          <button id="btnAceptar">Aceptar</button>
+          <button id="btnCancelar">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-menu">
+      <h1>Menú Principal</h1>
+      <div class="menu-grid">
+        <a href="modulos/registro.html" class="menu-btn">Registro</a>
+        <a href="modulos/orientacion.html" class="menu-btn"
+          >Cuestionario de Orientación</a
+        >
+        <a href="modulos/evaluacion.html" class="menu-btn"
+          >Evaluación Integral</a
+        >
+        <a href="modulos/incompletas.html" class="menu-btn"
+          >Encuestas Incompletas</a
+        >
+        <a href="modulos/completas.html" class="menu-btn"
+          >Encuestas Completas</a
+        >
+        <button class="menu-btn" onclick="exportarCSV()">
+          Exportar resultados CSV
+        </button>
+      </div>
+    </div>
+
+    <script src="js/common.js" type="module"></script>
+    <script type="module">
+      const modoDesarrollo = true; // ⚠️ CAMBIAR A false EN PRODUCCIÓN
+
+      if (modoDesarrollo) {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("main-menu").style.display = "block";
+      } else {
+        document.getElementById("btnAceptar").addEventListener("click", () => {
+          document.getElementById("popup").style.display = "none";
+          document.getElementById("main-menu").style.display = "block";
+        });
+
+        document.getElementById("btnCancelar").addEventListener("click", () => {
+          window.location.href = "https://www.google.com";
+        });
+      }
+    </script>
+  </body>
+</html>
