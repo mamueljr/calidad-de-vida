@@ -57,7 +57,7 @@
         <a href="modulos/completas.html" class="menu-btn"
           >Encuestas Completas</a
         >
-        <button class="menu-btn" onclick="exportarCSV()">
+        <button class="menu-btn" id="btnExportarTodo">
           Exportar resultados CSV
         </button>
       </div>
@@ -65,7 +65,17 @@
 
     <script src="js/common.js" type="module"></script>
     <script type="module">
+      import { exportarTodoCSV, cargarDatosGuardados } from "./js/datos.js";
+
       const modoDesarrollo = true; // ⚠️ CAMBIAR A false EN PRODUCCIÓN
+
+      cargarDatosGuardados();
+
+      document
+        .getElementById("btnExportarTodo")
+        .addEventListener("click", () => {
+          exportarTodoCSV();
+        });
 
       if (modoDesarrollo) {
         document.getElementById("popup").style.display = "none";
