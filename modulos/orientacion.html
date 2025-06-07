@@ -7,36 +7,7 @@
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
-    <!-- POPUP DE INSTRUCCIONES -->
-    <div id="popup-orientacion" class="popup">
-      <div class="popup-content">
-        <h2>
-          <span class="titulo-popup"
-            >CUESTIONARIO DE ORIENTACIÓN A LA TAREA Y AL EGO EN EL DEPORTE
-            ADAPTADO PARA DISCAPACIDAD INTELECTUAL</span
-          >
-        </h2>
-        <p>
-          <strong
-            >(TASK AND EGO ORIENTATION IN SPORT QUESTIONNAIRE - TEOSQ)</strong
-          >
-          <br /><br />
-          <strong>INSTRUCCIONES:</strong> Te voy a leer un enunciado, indica qué
-          tan de acuerdo estás. También puedes responder basándote en estas
-          caritas:
-        </p>
-        <img
-          src="../img/caras.png"
-          alt="Caritas de opciones"
-          class="caritas-img"
-        />
-        <div class="popup-boton">
-          <button onclick="cerrarPopupOrientacion()">Aceptar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- POPUP CARAS (se carga después del principal) -->
+    <!-- POPUP INSTRUCCIONES CARAS -->
     <div class="popup" id="popupCaras" style="display: none">
       <div class="popup-content">
         <img src="../img/caras.png" alt="Caritas" class="caritas-img" />
@@ -47,48 +18,128 @@
     </div>
 
     <!-- CUESTIONARIO -->
-    <div id="contenido-orientacion" style="display: none">
-      <div class="container">
-        <div class="centrado">
-          <button class="btn-caras" onclick="mostrarPopupCaras()">
-            Mostrar Caras
-          </button>
-        </div>
+    <div class="container">
+      <h2 class="titulo-evaluacion">
+        Cuestionario de Orientación a la Tarea y al Ego (TEOSQ)
+      </h2>
 
-        <h2>
-          En el deporte, me siento más orgulloso(a) de mí mismo(a) cuando...
-        </h2>
+      <div class="centrado">
+        <button class="btn-caras" onclick="mostrarPopupCaras()">
+          Mostrar Caras
+        </button>
+      </div>
 
-        <form id="form-orientacion">
-          <!-- Preguntas se inyectan por JS -->
-        </form>
+      <form id="form-orientacion">
+        <!-- Las preguntas se cargan por JS -->
+      </form>
 
-        <div class="button-group-horizontal">
-          <button
-            type="button"
-            class="btn-guardar"
-            onclick="exportarOrientacion()"
-          >
-            Exportar a CSV
-          </button>
-          <button
-            type="button"
-            class="btn-regresar"
-            onclick="window.location.href='../index.html'"
-          >
-            Volver al Menú Principal
-          </button>
-          <button
-            type="button"
-            class="btn-continuar"
-            onclick="window.location.href='evaluacion.html'"
-          >
-            Continuar a Evaluación Integral
-          </button>
-        </div>
+      <div class="centrado">
+        <button type="button" class="btn-guardar" onclick="guardarYContinuar()">
+          Guardar y continuar
+        </button>
+        <button
+          type="button"
+          class="btn-regresar"
+          onclick="window.location.href='../index.html'"
+        >
+          Cancelar
+        </button>
       </div>
     </div>
 
-    <script type="module" src="../js/orientacion.js"></script>
+    <script type="module">
+      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+
+      cargarDatosGuardados();
+
+      const preguntas = [
+        "Soy el único(a) que puede hacer las cosas correctamente.",
+        "Aprendo a hacer cosas nuevas.",
+        "Soy mejor que mis amigos(as).",
+        "Aprendo algo que es divertido.",
+        "Los demás se equivocan, pero yo no.",
+        "Aprendo una nueva habilidad al trabajar duro.",
+        "Trabajo muy duro.",
+        "Anoto la mayor cantidad de puntos o goles en un juego.",
+        "Lo que aprendo me motiva a practicar más.",
+        "Soy el/la mejor.",
+        "Aprendo algo que me hace sentir bien.",
+        "Doy lo mejor de mí.",
+        "No comprendo el ítem.", // solo como texto de referencia en opciones
+      ];
+
+      const opciones = [
+        { texto: "1", valor: 1 },
+        { texto: "2", valor: 2 },
+        { texto: "3", valor: 3 },
+        { texto: "4", valor: 4 },
+        { texto: "5", valor: 5 },
+        { texto: "❓", valor: 6 },
+      ];
+
+      const form = document.getElementById("form-orientacion");
+
+      preguntas.slice(0, 12).forEach((texto, index) => {
+        const div = document.createElement("div");
+        div.className = "pregunta";
+
+        const p = document.createElement("p");
+        p.textContent = `${index + 1}. ${texto}`;
+        div.appendChild(p);
+
+        const opcionesDiv = document.createElement("div");
+        opcionesDiv.className = "opciones";
+
+        opciones.forEach((op) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = op.texto;
+          btn.dataset.valor = op.valor;
+          btn.addEventListener("click", () => {
+            [...opcionesDiv.children].forEach((b) =>
+              b.classList.remove("activo")
+            );
+            btn.classList.add("activo");
+          });
+          opcionesDiv.appendChild(btn);
+        });
+
+        div.appendChild(opcionesDiv);
+        form.appendChild(div);
+      });
+
+      window.guardarYContinuar = function () {
+        const respuestas = [];
+        let incompletas = false;
+
+        document.querySelectorAll(".opciones").forEach((grupo, i) => {
+          const seleccionado = grupo.querySelector("button.activo");
+          if (!seleccionado) {
+            incompletas = true;
+          }
+          respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
+        });
+
+        if (incompletas) {
+          if (
+            !confirm(
+              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+            )
+          )
+            return;
+        }
+
+        guardarRespuestas("orientacion", respuestas);
+        window.location.href = "evaluacion.html";
+      };
+
+      window.mostrarPopupCaras = function () {
+        document.getElementById("popupCaras").style.display = "flex";
+      };
+
+      window.cerrarPopupCaras = function () {
+        document.getElementById("popupCaras").style.display = "none";
+      };
+    </script>
   </body>
 </html>

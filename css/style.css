@@ -6,73 +6,94 @@ body {
   color: #333;
 }
 
-/* Popup estilos */
-#popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-#popup-content {
-  background-color: #365698;
-  color: white;
-  padding: 30px;
+.container {
   max-width: 700px;
-  width: 90%;
-  text-align: left;
-  border-radius: 12px;
-  box-shadow: 0 0 15px #000;
-  overflow-y: auto;
-  max-height: 90vh;
-}
-
-#popup-content h2 {
-  text-align: center;
-  font-size: 28px;
-}
-
-#popup-content img {
-  width: 180px;
-  margin: 20px auto;
-  display: block;
-}
-
-.botones-popup {
-  text-align: center;
-}
-
-#popup-content button {
-  background-color: white;
-  color: #365698;
-  border: none;
-  padding: 16px 30px;
-  margin: 10px;
-  font-size: 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#popup-content button:hover {
-  background-color: #e0eafc;
-}
-
-/* Menú principal */
-#main-menu {
-  display: none;
+  margin: auto;
   padding: 20px;
-  text-align: center;
 }
 
-#main-menu h1 {
-  font-size: 32px;
-  margin-bottom: 30px;
+h1, h2 {
+  text-align: center;
   color: #365698;
+}
+
+.titulo-evaluacion {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.pregunta {
+  margin-bottom: 25px;
+}
+
+.pregunta p {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.opciones,
+.opciones-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.opciones button,
+.opciones-items button {
+  background-color: #eee;
+  border: 2px solid #ccc;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.opciones button.activo,
+.opciones-items button.selected {
+  background-color: #06b9da;
+  color: white;
+  border-color: #049ab5;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  font-size: 16px;
+  padding: 12px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-guardar {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-continuar {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-regresar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-caras {
+  background-color: #06b9da;
+  color: white;
 }
 
 .menu-grid {
@@ -81,18 +102,18 @@ body {
   gap: 20px;
   max-width: 600px;
   margin: auto;
+  margin-top: 30px;
 }
 
 .menu-btn {
-  display: block;
   background-color: #06b9da;
   color: white;
   padding: 20px;
-  font-size: 22px;
-  border-radius: 15px;
+  font-size: 20px;
+  border-radius: 12px;
   text-align: center;
   text-decoration: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   transition: transform 0.2s ease;
 }
 
@@ -101,118 +122,17 @@ body {
   transform: scale(1.03);
 }
 
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+.centrado {
+  text-align: center;
+  margin-top: 30px;
 }
 
 .highlight {
   background-color: yellow;
-  font-weight: bold;
-  padding: 3px 5px;
+  padding: 3px 6px;
 }
 
-form label {
-  display: block;
-  font-weight: bold;
-  margin-top: 15px;
-}
-
-form input,
-form select {
-  width: 100%;
-  padding: 12px;
-  font-size: 18px;
-  margin-top: 5px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.button-group {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.button-group button {
-  background-color: #06b9da;
-  color: white;
-  padding: 16px;
-  font-size: 20px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.button-group button:hover {
-  background-color: #049ab5;
-}
-
-/* Campo fecha con ícono */
-.fecha-group {
-  display: flex;
-  align-items: center;
-}
-
-.fecha-group input[type="date"] {
-  flex: 1;
-}
-
-.calendar-icon {
-  font-size: 24px;
-  margin-left: 10px;
-}
-
-/* Botones en línea horizontal */
-.button-group-horizontal {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  gap: 10px;
-}
-
-.button-group-horizontal button {
-  flex: 1;
-  min-width: 100px;
-  padding: 14px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  color: white;
-  transition: background-color 0.3s;
-}
-
-.btn-guardar {
-  background-color: #28a745;
-}
-
-.btn-guardar:hover {
-  background-color: #218838;
-}
-
-.btn-continuar {
-  background-color: #ffc107;
-  color: black;
-}
-
-.btn-continuar:hover {
-  background-color: #e0a800;
-}
-
-.btn-regresar {
-  background-color: #dc3545;
-}
-
-.btn-regresar:hover {
-  background-color: #c82333;
-}
-
-/* Estilo del popup de orientación */
+/* === POPUPS === */
 .popup {
   position: fixed;
   top: 0; left: 0;
@@ -230,7 +150,6 @@ form select {
   padding: 30px;
   max-width: 700px;
   width: 90%;
-  text-align: left;
   border-radius: 12px;
   box-shadow: 0 0 15px #000;
   overflow-y: auto;
@@ -246,31 +165,15 @@ form select {
   background-color: white;
   color: #365698;
   border: none;
-  padding: 14px 28px;
-  font-size: 18px;
-  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 20px;
 }
 
 .popup-content button:hover {
   background-color: #eee;
-}
-
-.caritas-img {
-  display: block;
-  width: 100%;
-  max-width: 600px;
-  margin: 20px auto;
-}
-
-.titulo-popup {
-  background-color: #365698;
-  color: white;
-  padding: 6px 10px;
-  display: inline-block;
-  font-weight: bold;
-  border-radius: 6px;
 }
 
 .popup-boton {
@@ -281,176 +184,20 @@ form select {
 .caritas-img {
   max-width: 100%;
   height: auto;
-  margin: 20px auto;
-  display: block;
-}
-
-#form-orientacion .pregunta {
-  margin-bottom: 20px;
-}
-
-#form-orientacion .pregunta p {
-  font-weight: bold;
-}
-
-.opciones label {
-  display: inline-block;
-  margin-right: 12px;
-  font-size: 18px;
-}
-
-.btn-guardar {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-continuar {
-  background-color: #ffc107;
-  color: black;
-}
-
-.btn-regresar {
-  background-color: #dc3545;
-  color: white;
-}
-.centrado {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.btn-caras {
-  background-color: #06b9da;
-  color: white;
-  font-size: 18px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.btn-caras:hover {
-  background-color: #049ab5;
-}
-
-.opciones button {
-  background-color: #eee;
-  border: 2px solid #ccc;
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 18px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.opciones button.activo {
-  background-color: #06b9da;
-  color: white;
-  border-color: #049ab5;
-}
-
-.titulo-evaluacion {
-  color: white;
-  font-weight: bold;
-  font-size: 22px;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.clave-iconica {
   display: block;
   margin: 20px auto;
-  max-width: 100%;
-  height: auto;
 }
-
-/* Estilos personalizados por botón */
-.menu-btn.verde { background-color: #28a745; }
-.menu-btn.verde:hover { background-color: #218838; }
-
-.menu-btn.morado { background-color: #6f42c1; }
-.menu-btn.morado:hover { background-color: #5936a2; }
-
-.menu-btn.azul { background-color: #007bff; }
-.menu-btn.azul:hover { background-color: #0069d9; }
-
-.menu-btn.naranja { background-color: #fd7e14; }
-.menu-btn.naranja:hover { background-color: #e86c00; }
-
-/* estilos para el formulario de orientación */
-/* ==== Estilos mejorados para items.html ==== */
-
-body {
-  background-color: #fef9e7;
-}
-
-.titulo-evaluacion {
-  text-align: center;
-  font-size: 26px;
-  margin-bottom: 30px;
-  color: #365698;
-}
-
-.pregunta p {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: #333;
-}
-
-.opciones-items {
+.fecha-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 30px;
+  align-items: center;
 }
 
-.btn-item {
-  flex: 1 1 40%;
-  min-width: 150px;
-  max-width: 200px;
-  font-size: 20px;
-  padding: 16px;
-  border-radius: 12px;
-  border: 2px solid #b0c4de;
-  background-color: #4f9ec4;
-  color: white;
+.fecha-group input[type="date"] {
+  flex: 1;
+}
+
+.calendar-icon {
+  font-size: 24px;
+  margin-left: 10px;
   cursor: pointer;
-  box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.btn-item:hover {
-  background-color: #3d8cb5;
-  transform: scale(1.05);
-}
-
-.btn-item.selected {
-  background-color: #2c6e97;
-  border-color: #1f4f70;
-}
-
-.btn-regresar {
-  background-color: #365698;
-  color: white;
-  font-size: 22px;
-  padding: 18px 40px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.15);
-}
-
-.btn-regresar:hover {
-  background-color: #2d467d;
-}
-
-.btn-guardar,
-.btn-regresar {
-  font-size: 20px;
-  padding: 18px 32px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  margin: 10px;
 }

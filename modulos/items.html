@@ -3,64 +3,100 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Items de Práctica</title>
+    <title>Ítems de práctica</title>
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
     <div class="container">
-      <h2 class="titulo-evaluacion">Items de Práctica</h2>
+      <h2 class="titulo-evaluacion">Ítems de práctica</h2>
 
       <form id="form-items">
-        <div class="pregunta">
-          <p>1. Me gusta patear la pelota.</p>
-          <div class="opciones-items">
-            <button type="button" class="btn-item">Nunca</button>
-            <button type="button" class="btn-item">Algunas veces</button>
-            <button type="button" class="btn-item">Frecuentemente</button>
-            <button type="button" class="btn-item">Siempre</button>
-          </div>
-        </div>
-
-        <div class="pregunta">
-          <p>2. Me gusta atrapar la pelota.</p>
-          <div class="opciones-items">
-            <button type="button" class="btn-item">Nunca</button>
-            <button type="button" class="btn-item">Algunas veces</button>
-            <button type="button" class="btn-item">Frecuentemente</button>
-            <button type="button" class="btn-item">Siempre</button>
-          </div>
-        </div>
-
-        <div class="pregunta">
-          <p>3. Me gusta correr de un lado a otro.</p>
-          <div class="opciones-items">
-            <button type="button" class="btn-item">Nunca</button>
-            <button type="button" class="btn-item">Algunas veces</button>
-            <button type="button" class="btn-item">Frecuentemente</button>
-            <button type="button" class="btn-item">Siempre</button>
-          </div>
-        </div>
+        <!-- Preguntas se insertan con JS -->
       </form>
 
-      <div class="centrado" style="margin-top: 40px">
+      <div class="centrado">
+        <button class="btn-guardar" onclick="guardarYContinuar()">
+          Guardar y continuar
+        </button>
         <button
           class="btn-regresar"
           onclick="window.location.href='evaluacion.html'"
         >
-          Regresar al Menú de Ítems
+          Volver al menú
         </button>
       </div>
     </div>
-    <script>
-      document.querySelectorAll(".opciones-items").forEach((grupo) => {
-        const botones = grupo.querySelectorAll(".btn-item");
-        botones.forEach((btn) => {
+
+    <script type="module">
+      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+
+      cargarDatosGuardados();
+
+      const preguntas = [
+        "1. ¿Comprendiste las instrucciones del cuestionario anterior?",
+        "2. ¿Pudiste responder con facilidad las preguntas?",
+        "3. ¿Necesitaste ayuda para contestar?",
+      ];
+
+      const opciones = [
+        { texto: "Sí", valor: 1 },
+        { texto: "No", valor: 2 },
+        { texto: "A veces", valor: 3 },
+      ];
+
+      const form = document.getElementById("form-items");
+
+      preguntas.forEach((texto, index) => {
+        const div = document.createElement("div");
+        div.className = "pregunta";
+
+        const p = document.createElement("p");
+        p.textContent = texto;
+        div.appendChild(p);
+
+        const opcionesDiv = document.createElement("div");
+        opcionesDiv.className = "opciones";
+
+        opciones.forEach((op) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = op.texto;
+          btn.dataset.valor = op.valor;
           btn.addEventListener("click", () => {
-            botones.forEach((b) => b.classList.remove("selected"));
-            btn.classList.add("selected");
+            [...opcionesDiv.children].forEach((b) =>
+              b.classList.remove("activo")
+            );
+            btn.classList.add("activo");
           });
+          opcionesDiv.appendChild(btn);
         });
+
+        div.appendChild(opcionesDiv);
+        form.appendChild(div);
       });
+
+      window.guardarYContinuar = function () {
+        const respuestas = [];
+        let incompletas = false;
+
+        document.querySelectorAll(".opciones").forEach((grupo, i) => {
+          const seleccionado = grupo.querySelector("button.activo");
+          if (!seleccionado) incompletas = true;
+          respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
+        });
+
+        if (incompletas) {
+          if (
+            !confirm(
+              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+            )
+          )
+            return;
+        }
+
+        guardarRespuestas("items", respuestas);
+        window.location.href = "autodeterminacion.html";
+      };
     </script>
   </body>
 </html>

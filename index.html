@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Menú Principal</title>
+    <title>Inicio de Encuesta</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div id="popup">
-      <div id="popup-content">
+    <!-- ASENTIMIENTO INFORMADO -->
+    <div id="popup-asentimiento" class="popup">
+      <div class="popup-content">
         <h2>ASENTIMIENTO INFORMADO</h2>
         <p>
           Hola mi nombre es __________________________ (nombre del investigador)
@@ -17,79 +18,127 @@
           <strong
             >El deporte adaptado como medio para mejorar la calidad de vida en
             personas con discapacidad intelectual.</strong
-          >
-          <br /><br />
+          ><br /><br />
           El objetivo es conocer los beneficios que tienes cuando haces
           ejercicio y/o vienes a entrenar. No tienes que contestar ahora, puedes
           consultarlo con tus papás. En caso de decidir participar, solo tienes
-          que responder unas preguntas.
-          <br /><br />
+          que responder unas preguntas.<br /><br />
           La participación es voluntaria y puede abandonarse en cualquier
           momento sin repercusión alguna. Los participantes y tutores tienen el
-          derecho de conocer los resultados derivados de este estudio.
-          <br /><br />
-          Pon una X en la manita que corresponde.
-          <br /><br />
+          derecho de conocer los resultados derivados de este estudio.<br /><br />
           Yo _____________________________________ (nombre del participante).
         </p>
-        <div class="botones-popup">
-          <img src="img/asentimiento.png" alt="Manos" />
-          <br />
-          <button id="btnAceptar">Aceptar</button>
-          <button id="btnCancelar">Cancelar</button>
+        <div class="popup-boton">
+          <button onclick="cerrarAsentimiento()">Aceptar</button>
         </div>
       </div>
     </div>
 
-    <div id="main-menu">
-      <h1>Menú Principal</h1>
-      <div class="menu-grid">
-        <a href="modulos/registro.html" class="menu-btn">Registro</a>
-        <a href="modulos/orientacion.html" class="menu-btn"
-          >Cuestionario de Orientación</a
-        >
-        <a href="modulos/evaluacion.html" class="menu-btn"
-          >Evaluación Integral</a
-        >
-        <a href="modulos/incompletas.html" class="menu-btn"
-          >Encuestas Incompletas</a
-        >
-        <a href="modulos/completas.html" class="menu-btn"
-          >Encuestas Completas</a
-        >
-        <button class="menu-btn" id="btnExportarTodo">
-          Exportar resultados CSV
-        </button>
+    <!-- FORMULARIO DE REGISTRO -->
+    <div id="formulario-registro" style="display: none" class="container">
+      <h2 class="titulo-evaluacion">Datos de la Persona Evaluada</h2>
+      <form id="registro-form">
+        <label for="fecha">Fecha de la aplicación:</label>
+        <div class="fecha-group">
+          <input type="date" id="fecha" required />
+          <span class="calendar-icon" onclick="abrirCalendario()">📅</span>
+        </div>
+
+        <label for="nombre">Nombre completo:</label>
+        <input type="text" id="nombre" required />
+
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" required>
+          <option value="">Seleccione</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Otro">Otro</option>
+        </select>
+
+        <label for="procedencia">Lugar de procedencia:</label>
+        <input type="text" id="procedencia" required />
+
+        <label for="id">ID:</label>
+        <input type="text" id="id" required placeholder="ej: enc-001" />
+
+        <div class="centrado">
+          <button
+            type="button"
+            class="btn-guardar"
+            onclick="guardarYMostrarInstrucciones()"
+          >
+            Continuar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- POPUP INSTRUCCIONES ORIENTACIÓN -->
+    <div id="popup-instrucciones" class="popup" style="display: none">
+      <div class="popup-content">
+        <h2>Cuestionario de Orientación a la Tarea y al Ego</h2>
+        <p>
+          (TASK AND EGO ORIENTATION IN SPORT QUESTIONNAIRE - TEOSQ)<br /><br />
+          Te voy a leer un enunciado, indica qué tan de acuerdo estás.<br />
+          Puedes responder con:<br />
+          1 = Totalmente en desacuerdo<br />
+          2 = En desacuerdo<br />
+          3 = A veces sí y a veces no<br />
+          4 = De acuerdo<br />
+          5 = Totalmente de acuerdo<br />
+          6 = No comprende el ítem<br /><br />
+          También puedes responder usando caritas que te mostraremos.
+        </p>
+        <div class="popup-boton">
+          <button onclick="iniciarOrientacion()">Comenzar cuestionario</button>
+        </div>
       </div>
     </div>
 
-    <script src="js/common.js" type="module"></script>
     <script type="module">
-      import { exportarTodoCSV, cargarDatosGuardados } from "./js/datos.js";
+      window.abrirCalendario = function () {
+        const fecha = document.getElementById("fecha");
+        if (fecha.showPicker) {
+          fecha.showPicker(); // Función moderna
+        } else {
+          fecha.focus(); // Fallback para navegadores sin showPicker
+        }
+      };
+      import { guardarRegistro } from "./js/datos.js";
 
-      const modoDesarrollo = true; // ⚠️ CAMBIAR A false EN PRODUCCIÓN
+      window.cerrarAsentimiento = function () {
+        document.getElementById("popup-asentimiento").style.display = "none";
+        document.getElementById("formulario-registro").style.display = "block";
+      };
 
-      cargarDatosGuardados();
+      window.guardarYMostrarInstrucciones = function () {
+        const data = {
+          fecha: document.getElementById("fecha").value,
+          nombre: document.getElementById("nombre").value.trim(),
+          sexo: document.getElementById("sexo").value,
+          procedencia: document.getElementById("procedencia").value.trim(),
+          id: document.getElementById("id").value.trim(),
+        };
 
-      document
-        .getElementById("btnExportarTodo")
-        .addEventListener("click", () => {
-          exportarTodoCSV();
-        });
+        if (
+          !data.fecha ||
+          !data.nombre ||
+          !data.sexo ||
+          !data.procedencia ||
+          !data.id
+        ) {
+          alert("Por favor completa todos los campos.");
+          return;
+        }
 
-      if (modoDesarrollo) {
-        document.getElementById("popup").style.display = "none";
-        document.getElementById("main-menu").style.display = "block";
-      } else {
-        document.getElementById("btnAceptar").addEventListener("click", () => {
-          document.getElementById("popup").style.display = "none";
-          document.getElementById("main-menu").style.display = "block";
-        });
+        guardarRegistro(data);
+        document.getElementById("formulario-registro").style.display = "none";
+        document.getElementById("popup-instrucciones").style.display = "flex";
+      };
 
-        document.getElementById("btnCancelar").addEventListener("click", () => {
-          window.location.href = "https://www.google.com";
-        });
-      }
+      window.iniciarOrientacion = function () {
+        window.location.href = "modulos/orientacion.html";
+      };
     </script>
   </body>
 </html>

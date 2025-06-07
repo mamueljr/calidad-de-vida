@@ -11,22 +11,110 @@
       <h2 class="titulo-evaluacion">Bienestar Emocional</h2>
 
       <form id="form-bienestar">
-        <!-- Las preguntas se generan dinámicamente -->
+        <!-- Preguntas se insertan con JS -->
       </form>
 
-      <div class="centrado" style="margin-top: 40px">
-        <button class="btn-guardar" onclick="guardarBienestar()">
-          Guardar respuestas
+      <div class="centrado">
+        <button class="btn-guardar" onclick="guardarYContinuar()">
+          Guardar y continuar
         </button>
         <button
           class="btn-regresar"
           onclick="window.location.href='evaluacion.html'"
         >
-          Regresar al menú
+          Volver al menú
         </button>
       </div>
     </div>
 
-    <script type="module" src="../js/bienestar.js"></script>
+    <script type="module">
+      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+
+      cargarDatosGuardados();
+
+      const preguntas = [
+        { texto: "1. Me siento feliz con mi vida.", valores: [4, 3, 2, 1] },
+        { texto: "2. Me gusta cómo soy.", valores: [4, 3, 2, 1] },
+        { texto: "3. Me siento triste o desanimado/a.", valores: [1, 2, 3, 4] }, // invertida
+        { texto: "4. Me siento solo/a.", valores: [1, 2, 3, 4] }, // invertida
+        {
+          texto: "5. Me siento seguro/a de mí mismo/a.",
+          valores: [4, 3, 2, 1],
+        },
+        {
+          texto: "6. Me da miedo intentar cosas nuevas.",
+          valores: [1, 2, 3, 4],
+        }, // invertida
+        {
+          texto: "7. Me siento querido/a por los demás.",
+          valores: [4, 3, 2, 1],
+        },
+        { texto: "8. Me enojo fácilmente.", valores: [1, 2, 3, 4] }, // invertida
+        {
+          texto: "9. Me siento tranquilo/a la mayor parte del tiempo.",
+          valores: [4, 3, 2, 1],
+        },
+      ];
+
+      const opcionesTexto = [
+        "Nunca",
+        "Algunas veces",
+        "Frecuentemente",
+        "Siempre",
+      ];
+      const form = document.getElementById("form-bienestar");
+
+      preguntas.forEach((pregunta, i) => {
+        const div = document.createElement("div");
+        div.className = "pregunta";
+
+        const p = document.createElement("p");
+        p.textContent = pregunta.texto;
+        div.appendChild(p);
+
+        const opcionesDiv = document.createElement("div");
+        opcionesDiv.className = "opciones";
+
+        opcionesTexto.forEach((txt, idx) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = txt;
+          btn.dataset.valor = pregunta.valores[idx];
+          btn.addEventListener("click", () => {
+            [...opcionesDiv.children].forEach((b) =>
+              b.classList.remove("activo")
+            );
+            btn.classList.add("activo");
+          });
+          opcionesDiv.appendChild(btn);
+        });
+
+        div.appendChild(opcionesDiv);
+        form.appendChild(div);
+      });
+
+      window.guardarYContinuar = function () {
+        const respuestas = [];
+        let incompletas = false;
+
+        document.querySelectorAll(".opciones").forEach((grupo, i) => {
+          const seleccionado = grupo.querySelector("button.activo");
+          if (!seleccionado) incompletas = true;
+          respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
+        });
+
+        if (incompletas) {
+          if (
+            !confirm(
+              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+            )
+          )
+            return;
+        }
+
+        guardarRespuestas("bienestar", respuestas);
+        window.location.href = "inclusion.html";
+      };
+    </script>
   </body>
 </html>

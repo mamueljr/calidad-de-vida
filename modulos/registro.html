@@ -9,17 +9,9 @@
   <body>
     <div class="container">
       <h2><span class="highlight">DATOS DE LA PERSONA EVALUADA:</span></h2>
-
       <form id="registro-form">
         <label for="fecha">Fecha de la aplicación:</label>
-        <div class="fecha-group">
-          <input type="date" id="fecha" required />
-          <span
-            class="calendar-icon"
-            onclick="document.getElementById('fecha').showPicker?.() || document.getElementById('fecha').focus()"
-            >📅</span
-          >
-        </div>
+        <input type="date" id="fecha" required />
 
         <label for="nombre">Nombre completo:</label>
         <input type="text" id="nombre" required />
@@ -38,7 +30,7 @@
         <label for="id">ID:</label>
         <input type="text" id="id" required placeholder="ej: enc-001" />
 
-        <div class="button-group-horizontal">
+        <div class="centrado">
           <button type="button" class="btn-guardar" onclick="guardarRegistro()">
             Guardar
           </button>
@@ -47,7 +39,7 @@
             class="btn-continuar"
             onclick="continuarCuestionario()"
           >
-            Continuar con Cuestionario
+            Continuar
           </button>
           <button type="button" class="btn-regresar" onclick="regresarMenu()">
             Regresar al Menú

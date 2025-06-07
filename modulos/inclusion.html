@@ -3,20 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Autodeterminación</title>
+    <title>Inclusión Social</title>
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
     <div class="container">
-      <h2 class="titulo-evaluacion">Autodeterminación</h2>
+      <h2 class="titulo-evaluacion">Inclusión Social</h2>
 
-      <form id="form-autodeterminacion">
-        <!-- Preguntas generadas con JS -->
+      <form id="form-inclusion">
+        <!-- Preguntas se insertan dinámicamente -->
       </form>
 
       <div class="centrado">
-        <button class="btn-guardar" onclick="guardarYContinuar()">
-          Guardar y continuar
+        <button class="btn-guardar" onclick="guardarYFinalizar()">
+          Finalizar encuesta
         </button>
         <button
           class="btn-regresar"
@@ -28,47 +28,38 @@
     </div>
 
     <script type="module">
-      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+      import {
+        guardarRespuestas,
+        finalizarEncuestado,
+        cargarDatosGuardados,
+      } from "../js/datos.js";
 
       cargarDatosGuardados();
 
       const preguntas = [
         {
           texto:
-            "1. Utilizo el transporte público (autobús, taxi) por mí mismo/a (sin supervisión).",
+            "1. Me invitan a participar en actividades con otras personas.",
           valores: [4, 3, 2, 1],
         },
+        { texto: "2. Me tratan de manera justa.", valores: [4, 3, 2, 1] },
         {
-          texto:
-            "2. Decido quién entra a mis espacios de intimidad (mi habitación, mi baño, etc.).",
-          valores: [4, 3, 2, 1],
-        },
-        {
-          texto: "3. Participo en las decisiones que se toman en mi casa.",
-          valores: [4, 3, 2, 1],
-        },
-        { texto: "4. Elijo la ropa que me compro.", valores: [4, 3, 2, 1] },
-        {
-          texto: "5. Otra persona decide la ropa que me pongo cada día.",
+          texto: "3. Me ignoran o excluyen de los grupos.",
           valores: [1, 2, 3, 4],
-        },
+        }, // invertida
         {
-          texto:
-            "6. Otra persona elige las actividades que hago en mi tiempo libre.",
-          valores: [1, 2, 3, 4],
+          texto: "4. Siento que pertenezco al lugar donde estudio o trabajo.",
+          valores: [4, 3, 2, 1],
         },
+        { texto: "5. Me insultan o hacen burla de mí.", valores: [1, 2, 3, 4] }, // invertida
+        { texto: "6. Me siento aceptado/a como soy.", valores: [4, 3, 2, 1] },
+        { texto: "7. Me discriminan por alguna razón.", valores: [1, 2, 3, 4] }, // invertida
         {
-          texto:
-            "7. Valoro las posibles consecuencias antes de tomar una decisión.",
+          texto: "8. Tengo amigos con quienes convivir.",
           valores: [4, 3, 2, 1],
         },
         {
-          texto:
-            "8. Hago planes para llevar a cabo los proyectos que me interesan.",
-          valores: [4, 3, 2, 1],
-        },
-        {
-          texto: "9. Expreso mis preferencias cuando me permiten elegir.",
+          texto: "9. Me siento valorado/a por los demás.",
           valores: [4, 3, 2, 1],
         },
       ];
@@ -79,7 +70,7 @@
         "Frecuentemente",
         "Siempre",
       ];
-      const form = document.getElementById("form-autodeterminacion");
+      const form = document.getElementById("form-inclusion");
 
       preguntas.forEach((pregunta, i) => {
         const div = document.createElement("div");
@@ -110,7 +101,7 @@
         form.appendChild(div);
       });
 
-      window.guardarYContinuar = function () {
+      window.guardarYFinalizar = function () {
         const respuestas = [];
         let incompletas = false;
 
@@ -123,14 +114,14 @@
         if (incompletas) {
           if (
             !confirm(
-              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+              "Hay preguntas sin responder. ¿Deseas finalizar de todos modos?"
             )
           )
             return;
         }
 
-        guardarRespuestas("autodeterminacion", respuestas);
-        window.location.href = "bienestar.html";
+        guardarRespuestas("inclusion", respuestas);
+        finalizarEncuestado(); // ← Esto genera y descarga el CSV
       };
     </script>
   </body>

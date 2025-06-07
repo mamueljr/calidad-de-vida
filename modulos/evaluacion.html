@@ -1,55 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Evaluación Integral</title>
-  <link rel="stylesheet" href="../css/style.css" />
-</head>
-<body>
-  <!-- POPUP DE INSTRUCCIONES -->
-  <div id="popup-evaluacion" class="popup">
-    <div class="popup-content">
-      <h2 class="titulo-evaluacion">
-        EVALUACIÓN INTEGRAL DE LA CALIDAD DE VIDA DE PERSONAS CON DISCAPACIDAD INTELECTUAL O DEL DESARROLLO
-      </h2>
-      <p>
-        <strong>INSTRUCCIONES:</strong> Hola (nombre de la persona), quiero que pienses sobre tu vida en general, en los lugares en los que vives, trabajas y te diviertes, sobre tu familia, tus amigos y los profesionales que conoces. Después me vas a decir cómo te sientes en relación con todo ello.
-        <br><br>
-        Ten en cuenta que no hay respuestas correctas ni incorrectas. Sólo quiero saber cómo te sientes y qué piensas sobre estos aspectos y que respondas sinceramente.
-        <br><br>
-        Antes de comenzar con las preguntas, vamos a dedicar algo de tiempo a las opciones de respuesta que puedes utilizar.
-        <br><br>
-        Puedes elegir entre:
-        <ul>
-          <li><strong>Nunca</strong></li>
-          <li><strong>Algunas veces</strong></li>
-          <li><strong>Frecuentemente</strong></li>
-          <li><strong>Siempre</strong></li>
-        </ul>
-      </p>
-      <div class="popup-boton">
-        <button onclick="cerrarPopupEvaluacion()">Aceptar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONTENIDO DEL MENÚ -->
-  <div id="contenido-evaluacion" style="display: none;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evaluación Integral</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
     <div class="container">
-      <img src="../img/iconica.png" alt="Clave icónica" class="clave-iconica" />
-
-      <h2 style="text-align:center; margin-top: 20px;">Selecciona una sección para continuar:</h2>
+      <h2 class="titulo-evaluacion">Evaluación Integral</h2>
+      <p class="centrado">Selecciona una sección para continuar:</p>
 
       <div class="menu-grid">
-        <a href="items.html" class="menu-btn verde">ITEMS DE PRÁCTICA</a>
-        <a href="autodeterminacion.html" class="menu-btn morado">AUTODETERMINACIÓN</a>
-        <a href="bienestar.html" class="menu-btn azul">BIENESTAR EMOCIONAL</a>
-        <a href="inclusion.html" class="menu-btn naranja">INCLUSIÓN SOCIAL</a>
+        <a href="items.html" class="menu-btn">🧩 Ítems de práctica</a>
+        <a href="autodeterminacion.html" class="menu-btn"
+          >🗣️ Autodeterminación</a
+        >
+        <a href="bienestar.html" class="menu-btn">😊 Bienestar emocional</a>
+        <a href="inclusion.html" class="menu-btn">🌍 Inclusión social</a>
+      </div>
+
+      <div class="centrado" style="margin-top: 40px">
+        <button
+          class="btn-regresar"
+          onclick="window.location.href='../index.html'"
+        >
+          Volver al inicio
+        </button>
       </div>
     </div>
-  </div>
-
-  <script type="module" src="../js/evaluacion.js"></script>
-</body>
+  </body>
 </html>
