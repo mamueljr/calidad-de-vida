@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Items de Práctica</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="titulo-evaluacion">Items de Práctica</h2>
+
+      <form id="form-items">
+        <div class="pregunta">
+          <p>1. Me gusta patear la pelota.</p>
+          <div class="opciones-items">
+            <button type="button" class="btn-item">Nunca</button>
+            <button type="button" class="btn-item">Algunas veces</button>
+            <button type="button" class="btn-item">Frecuentemente</button>
+            <button type="button" class="btn-item">Siempre</button>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <p>2. Me gusta atrapar la pelota.</p>
+          <div class="opciones-items">
+            <button type="button" class="btn-item">Nunca</button>
+            <button type="button" class="btn-item">Algunas veces</button>
+            <button type="button" class="btn-item">Frecuentemente</button>
+            <button type="button" class="btn-item">Siempre</button>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <p>3. Me gusta correr de un lado a otro.</p>
+          <div class="opciones-items">
+            <button type="button" class="btn-item">Nunca</button>
+            <button type="button" class="btn-item">Algunas veces</button>
+            <button type="button" class="btn-item">Frecuentemente</button>
+            <button type="button" class="btn-item">Siempre</button>
+          </div>
+        </div>
+      </form>
+
+      <div class="centrado" style="margin-top: 40px">
+        <button
+          class="btn-regresar"
+          onclick="window.location.href='evaluacion.html'"
+        >
+          Regresar al Menú de Ítems
+        </button>
+      </div>
+    </div>
+    <script>
+      document.querySelectorAll(".opciones-items").forEach((grupo) => {
+        const botones = grupo.querySelectorAll(".btn-item");
+        botones.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            botones.forEach((b) => b.classList.remove("selected"));
+            btn.classList.add("selected");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

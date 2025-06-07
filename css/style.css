@@ -376,4 +376,81 @@ form select {
 .menu-btn.naranja { background-color: #fd7e14; }
 .menu-btn.naranja:hover { background-color: #e86c00; }
 
+/* estilos para el formulario de orientación */
+/* ==== Estilos mejorados para items.html ==== */
 
+body {
+  background-color: #fef9e7;
+}
+
+.titulo-evaluacion {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #365698;
+}
+
+.pregunta p {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.opciones-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.btn-item {
+  flex: 1 1 40%;
+  min-width: 150px;
+  max-width: 200px;
+  font-size: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid #b0c4de;
+  background-color: #4f9ec4;
+  color: white;
+  cursor: pointer;
+  box-shadow: 2px 3px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-item:hover {
+  background-color: #3d8cb5;
+  transform: scale(1.05);
+}
+
+.btn-item.selected {
+  background-color: #2c6e97;
+  border-color: #1f4f70;
+}
+
+.btn-regresar {
+  background-color: #365698;
+  color: white;
+  font-size: 22px;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-regresar:hover {
+  background-color: #2d467d;
+}
+
+.btn-guardar,
+.btn-regresar {
+  font-size: 20px;
+  padding: 18px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 10px;
+}

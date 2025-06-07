@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autodeterminación</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="titulo-evaluacion">Autodeterminación</h2>
+
+      <form id="form-autodeterminacion">
+        <!-- Las preguntas se inyectan con JS -->
+      </form>
+
+      <div class="centrado" style="margin-top: 40px">
+        <button class="btn-guardar" onclick="guardarAutodeterminacion()">
+          Guardar respuestas
+        </button>
+        <button
+          class="btn-regresar"
+          onclick="window.location.href='evaluacion.html'"
+        >
+          Regresar al menú
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="../js/autodeterminacion.js"></script>
+  </body>
+</html>
