@@ -104,7 +104,8 @@
           fecha.focus(); // Fallback para navegadores sin showPicker
         }
       };
-      import { guardarRegistro } from "./js/datos.js";
+      import { guardarRegistro, cargarDatosGuardados } from "./js/datos.js";
+      cargarDatosGuardados(); // ← Agregado
 
       window.cerrarAsentimiento = function () {
         document.getElementById("popup-asentimiento").style.display = "none";

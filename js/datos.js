@@ -14,13 +14,22 @@ export const datosEncuesta = {
 };
 
 // Cargar encuestas almacenadas desde localStorage
-export function cargarDatosGuardados() {
+/* export function cargarDatosGuardados() {
   const guardado = localStorage.getItem('datosEncuesta');
   if (guardado) {
     const datos = JSON.parse(guardado);
     Object.assign(datosEncuesta, datos);
   }
+} */
+export function cargarDatosGuardados() {
+  const guardado = localStorage.getItem('datosEncuesta');
+  if (guardado) {
+    const datos = JSON.parse(guardado);
+    datosEncuesta.encuestados = datos.encuestados || [];
+    datosEncuesta.encuestadoActual = datos.encuestadoActual || null;
+  }
 }
+
 
 // Guardar en localStorage después de cada modificación
 function guardarEnLocalStorage() {
@@ -28,10 +37,32 @@ function guardarEnLocalStorage() {
 }
 
 // Guardar la sección de datos personales
-export function guardarRegistro(data) {
+/*export function guardarRegistro(data) {
   datosEncuesta.encuestadoActual.registro = data;
   guardarEnLocalStorage();
+}*/
+export function guardarRegistro(data) {
+  // Si hay un encuestado anterior completo no finalizado, lo guardamos
+  if (
+    datosEncuesta.encuestadoActual?.registro?.id &&
+    encuestaCompleta(datosEncuesta.encuestadoActual)
+  ) {
+    datosEncuesta.encuestados.push({ ...datosEncuesta.encuestadoActual });
+  }
+
+  // Iniciar nuevo registro
+  datosEncuesta.encuestadoActual = {
+    registro: data,
+    orientacion: [],
+    autodeterminacion: [],
+    items: [],
+    bienestar: [],
+    inclusion: []
+  };
+
+  localStorage.setItem("datosEncuesta", JSON.stringify(datosEncuesta));
 }
+
 
 // Guardar una sección del cuestionario
 export function guardarRespuestas(seccion, respuestas) {
@@ -80,24 +111,31 @@ function encuestaCompleta(e) {
 
 // Finalizar encuesta, guardar y exportar CSV de inmediato
 export function finalizarEncuestado() {
+  cargarDatosGuardados(); // Asegurarse de que los datos estén actualizados
   if (!encuestaCompleta(datosEncuesta.encuestadoActual)) {
     alert("⚠️ La encuesta no está completa. Asegúrate de llenar todos los módulos.");
     return;
   }
 
-  // Guardar al historial
-  datosEncuesta.encuestados.push({ ...datosEncuesta.encuestadoActual });
+  const copia = { ...datosEncuesta.encuestadoActual };
+  // Reconfirma que encuestados existe
+  if (!Array.isArray(datosEncuesta.encuestados)) {
+    datosEncuesta.encuestados = [];
+  }
 
-  // Limpiar al actual
+  datosEncuesta.encuestados.push(copia);
   datosEncuesta.encuestadoActual = null;
-
-  // Guardar en localStorage
   localStorage.setItem("datosEncuesta", JSON.stringify(datosEncuesta));
 
   alert("✅ Encuesta finalizada y guardada correctamente.");
-  exportarTodoCSV();
+
+  exportarTodoCSV();                // CSV general
+  exportarIndividualCSV(copia);    // CSV por encuestado
+
   window.location.href = "../index.html";
 }
+
+
 
 
 // Exportar todas las encuestas completas como archivo CSV
@@ -143,6 +181,42 @@ export function exportarTodoCSV() {
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'encuestas_completas.csv';
+  link.click();
+}
+// Funcion para exportar un encuestado individual a CSV
+function exportarIndividualCSV(e) {
+  const preguntasPorSeccion = {
+    orientacion: 13,
+    autodeterminacion: 9,
+    bienestar: 9,
+    inclusion: 9
+  };
+
+  const headers = [
+    "ID", "Nombre", "Fecha", "Sexo", "Procedencia",
+    ...Array.from({ length: preguntasPorSeccion.orientacion }, (_, i) => `Orientación_P${i + 1}`),
+    ...Array.from({ length: preguntasPorSeccion.autodeterminacion }, (_, i) => `Autodeterminación_P${i + 1}`),
+    ...Array.from({ length: preguntasPorSeccion.bienestar }, (_, i) => `Bienestar_P${i + 1}`),
+    ...Array.from({ length: preguntasPorSeccion.inclusion }, (_, i) => `Inclusión_P${i + 1}`)
+  ];
+
+  const fila = [
+    e.registro.id || '',
+    e.registro.nombre || '',
+    e.registro.fecha || '',
+    e.registro.sexo || '',
+    e.registro.procedencia || '',
+    ...(e.orientacion || []),
+    ...(e.autodeterminacion || []),
+    ...(e.bienestar || []),
+    ...(e.inclusion || [])
+  ];
+
+  const csv = [headers.join(','), fila.join(',')].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `encuesta_${e.registro.id || "respaldo"}.csv`;
   link.click();
 }
 
