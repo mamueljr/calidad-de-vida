@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <div
+      id="video-noacepto"
+      style="display: none; text-align: center; padding: 20px"
+    >
+      <video width="100%" controls autoplay>
+        <source src="./videos/noacepto.mp4" type="video/mp4" />
+        Tu navegador no soporta la reproducción de video.
+      </video>
+    </div>
     <!-- ASENTIMIENTO INFORMADO -->
     <div id="popup-asentimiento" class="popup">
       <div class="popup-content">
@@ -31,7 +40,7 @@
         <!-- Imagen de asentimiento -->
         <div style="text-align: center; margin: 20px 0">
           <img
-            src="./img/asentamiento.png"
+            src="./img/asentimiento.png"
             alt="Manos de asentimiento"
             style="max-width: 100%; height: auto"
           />
@@ -42,14 +51,7 @@
           style="display: flex; justify-content: center; gap: 10px"
         >
           <button onclick="cerrarAsentimiento()">Aceptar</button>
-          <button
-            onclick="window.location.href='https://www.youtube.com/watch?v=Aq5WXmQQooo&ab_channel=RickRollLinks'"
-          >
-            No acepto
-          </button>
-        </div>
-        <div class="popup-boton">
-          <button onclick="cerrarAsentimiento()">Aceptar</button>
+          <button onclick="mostrarVideoNoAcepto()">No acepto</button>
         </div>
       </div>
     </div>
@@ -160,6 +162,12 @@
       window.iniciarOrientacion = function () {
         window.location.href = "modulos/orientacion.html";
       };
+    </script>
+    <script>
+      function mostrarVideoNoAcepto() {
+        document.getElementById("popup-asentimiento").style.display = "none";
+        document.getElementById("video-noacepto").style.display = "block";
+      }
     </script>
   </body>
 </html>
