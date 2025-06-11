@@ -27,66 +27,66 @@
       </div>
     </div>
 
-    <script type="module">
-      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+    <script src="../js/datos-clasico.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        cargarDatosGuardados();
 
-      cargarDatosGuardados();
+        const preguntas = [
+          "1. ¿Comprendiste las instrucciones del cuestionario anterior?",
+          "2. ¿Pudiste responder con facilidad las preguntas?",
+          "3. ¿Necesitaste ayuda para contestar?",
+        ];
 
-      const preguntas = [
-        "1. ¿Comprendiste las instrucciones del cuestionario anterior?",
-        "2. ¿Pudiste responder con facilidad las preguntas?",
-        "3. ¿Necesitaste ayuda para contestar?",
-      ];
+        const opciones = [
+          { texto: "Sí", valor: 1 },
+          { texto: "No", valor: 2 },
+          { texto: "A veces", valor: 3 },
+        ];
 
-      const opciones = [
-        { texto: "Sí", valor: 1 },
-        { texto: "No", valor: 2 },
-        { texto: "A veces", valor: 3 },
-      ];
+        const form = document.getElementById("form-items");
 
-      const form = document.getElementById("form-items");
+        preguntas.forEach((texto) => {
+          const div = document.createElement("div");
+          div.className = "pregunta";
 
-      preguntas.forEach((texto, index) => {
-        const div = document.createElement("div");
-        div.className = "pregunta";
+          const p = document.createElement("p");
+          p.textContent = texto;
+          div.appendChild(p);
 
-        const p = document.createElement("p");
-        p.textContent = texto;
-        div.appendChild(p);
+          const opcionesDiv = document.createElement("div");
+          opcionesDiv.className = "opciones";
 
-        const opcionesDiv = document.createElement("div");
-        opcionesDiv.className = "opciones";
-
-        opciones.forEach((op) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.textContent = op.texto;
-          btn.dataset.valor = op.valor;
-          btn.addEventListener("click", () => {
-            [...opcionesDiv.children].forEach((b) =>
-              b.classList.remove("activo")
-            );
-            btn.classList.add("activo");
+          opciones.forEach((op) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = op.texto;
+            btn.dataset.valor = op.valor;
+            btn.addEventListener("click", () => {
+              [...opcionesDiv.children].forEach((b) =>
+                b.classList.remove("activo")
+              );
+              btn.classList.add("activo");
+            });
+            opcionesDiv.appendChild(btn);
           });
-          opcionesDiv.appendChild(btn);
+
+          div.appendChild(opcionesDiv);
+          form.appendChild(div);
         });
 
-        div.appendChild(opcionesDiv);
-        form.appendChild(div);
+        window.guardarYContinuar = function () {
+          const respuestas = [];
+
+          document.querySelectorAll(".opciones").forEach((grupo) => {
+            const seleccionado = grupo.querySelector("button.activo");
+            respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
+          });
+
+          guardarRespuestas("items", respuestas);
+          window.location.href = "autodeterminacion.html";
+        };
       });
-
-      window.guardarYContinuar = function () {
-        const respuestas = [];
-
-        document.querySelectorAll(".opciones").forEach((grupo) => {
-          const seleccionado = grupo.querySelector("button.activo");
-          respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
-        });
-
-        // Guardar aunque no haya respuestas completas (porque es opcional)
-        guardarRespuestas("items", respuestas);
-        window.location.href = "autodeterminacion.html";
-      };
     </script>
   </body>
 </html>

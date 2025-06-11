@@ -46,97 +46,98 @@
       </div>
     </div>
 
-    <script type="module">
-      import { guardarRespuestas, cargarDatosGuardados } from "../js/datos.js";
+    <script src="../js/datos-clasico.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        cargarDatosGuardados();
 
-      cargarDatosGuardados();
+        const preguntas = [
+          "1. Soy el único(a) que puede hacer las cosas correctamente.",
+          "2. Aprendo a hacer cosas nuevas.",
+          "3. Soy mejor que mis amigos(as).",
+          "4. Aprendo algo que es divertido.",
+          "5. Los demás se equivocan, pero yo no.",
+          "6. Aprendo una nueva habilidad al trabajar duro.",
+          "7. Trabajo muy duro.",
+          "8. Anoto la mayor cantidad de puntos o goles en un juego.",
+          "9. Lo que aprendo me motiva a practicar más.",
+          "10. Soy el/la mejor.",
+          "11. Aprendo algo que me hace sentir bien.",
+          "12. Doy lo mejor de mí.",
+          "13. Siento que tengo éxito cuando mejoro en lo que hago.",
+        ];
 
-      const preguntas = [
-        "1. Soy el único(a) que puede hacer las cosas correctamente.",
-        "2. Aprendo a hacer cosas nuevas.",
-        "3. Soy mejor que mis amigos(as).",
-        "4. Aprendo algo que es divertido.",
-        "5. Los demás se equivocan, pero yo no.",
-        "6. Aprendo una nueva habilidad al trabajar duro.",
-        "7. Trabajo muy duro.",
-        "8. Anoto la mayor cantidad de puntos o goles en un juego.",
-        "9. Lo que aprendo me motiva a practicar más.",
-        "10. Soy el/la mejor.",
-        "11. Aprendo algo que me hace sentir bien.",
-        "12. Doy lo mejor de mí.",
-        "13. Siento que tengo éxito cuando mejoro en lo que hago.",
-      ];
+        const opciones = [
+          { texto: "1", valor: 1 },
+          { texto: "2", valor: 2 },
+          { texto: "3", valor: 3 },
+          { texto: "4", valor: 4 },
+          { texto: "5", valor: 5 },
+          { texto: "❓", valor: 6 },
+        ];
 
-      const opciones = [
-        { texto: "1", valor: 1 },
-        { texto: "2", valor: 2 },
-        { texto: "3", valor: 3 },
-        { texto: "4", valor: 4 },
-        { texto: "5", valor: 5 },
-        { texto: "❓", valor: 6 },
-      ];
+        const form = document.getElementById("form-orientacion");
 
-      const form = document.getElementById("form-orientacion");
+        preguntas.forEach((texto, index) => {
+          const div = document.createElement("div");
+          div.className = "pregunta";
 
-      preguntas.forEach((texto, index) => {
-        const div = document.createElement("div");
-        div.className = "pregunta";
+          const p = document.createElement("p");
+          p.textContent = texto;
+          div.appendChild(p);
 
-        const p = document.createElement("p");
-        p.textContent = texto;
-        div.appendChild(p);
+          const opcionesDiv = document.createElement("div");
+          opcionesDiv.className = "opciones";
 
-        const opcionesDiv = document.createElement("div");
-        opcionesDiv.className = "opciones";
-
-        opciones.forEach((op) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.textContent = op.texto;
-          btn.dataset.valor = op.valor;
-          btn.addEventListener("click", () => {
-            [...opcionesDiv.children].forEach((b) =>
-              b.classList.remove("activo")
-            );
-            btn.classList.add("activo");
+          opciones.forEach((op) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = op.texto;
+            btn.dataset.valor = op.valor;
+            btn.addEventListener("click", () => {
+              [...opcionesDiv.children].forEach((b) =>
+                b.classList.remove("activo")
+              );
+              btn.classList.add("activo");
+            });
+            opcionesDiv.appendChild(btn);
           });
-          opcionesDiv.appendChild(btn);
+
+          div.appendChild(opcionesDiv);
+          form.appendChild(div);
         });
 
-        div.appendChild(opcionesDiv);
-        form.appendChild(div);
-      });
+        window.guardarYContinuar = function () {
+          const respuestas = [];
+          let incompletas = false;
 
-      window.guardarYContinuar = function () {
-        const respuestas = [];
-        let incompletas = false;
+          document.querySelectorAll(".opciones").forEach((grupo) => {
+            const seleccionado = grupo.querySelector("button.activo");
+            if (!seleccionado) incompletas = true;
+            respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
+          });
 
-        document.querySelectorAll(".opciones").forEach((grupo) => {
-          const seleccionado = grupo.querySelector("button.activo");
-          if (!seleccionado) incompletas = true;
-          respuestas.push(seleccionado ? seleccionado.dataset.valor : "");
-        });
-
-        if (incompletas) {
-          if (
-            !confirm(
-              "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+          if (incompletas) {
+            if (
+              !confirm(
+                "Hay preguntas sin responder. ¿Deseas continuar de todos modos?"
+              )
             )
-          )
-            return;
-        }
+              return;
+          }
 
-        guardarRespuestas("orientacion", respuestas);
-        window.location.href = "evaluacion.html";
-      };
+          guardarRespuestas("orientacion", respuestas);
+          window.location.href = "evaluacion.html";
+        };
 
-      window.mostrarPopupCaras = function () {
-        document.getElementById("popupCaras").style.display = "flex";
-      };
+        window.mostrarPopupCaras = function () {
+          document.getElementById("popupCaras").style.display = "flex";
+        };
 
-      window.cerrarPopupCaras = function () {
-        document.getElementById("popupCaras").style.display = "none";
-      };
+        window.cerrarPopupCaras = function () {
+          document.getElementById("popupCaras").style.display = "none";
+        };
+      });
     </script>
   </body>
 </html>

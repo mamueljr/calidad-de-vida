@@ -16,6 +16,7 @@
         Tu navegador no soporta la reproducción de video.
       </video>
     </div>
+
     <!-- ASENTIMIENTO INFORMADO -->
     <div id="popup-asentimiento" class="popup">
       <div class="popup-content">
@@ -37,7 +38,6 @@
           derecho de conocer los resultados derivados de este estudio.<br /><br />
           Yo _____________________________________ (nombre del participante).
         </p>
-        <!-- Imagen de asentimiento -->
         <div style="text-align: center; margin: 20px 0">
           <img
             src="./img/asentimiento.png"
@@ -45,7 +45,6 @@
             style="max-width: 100%; height: auto"
           />
         </div>
-
         <div
           class="popup-boton"
           style="display: flex; justify-content: center; gap: 10px"
@@ -84,11 +83,7 @@
         <input type="text" id="id" required placeholder="ej: enc-001" />
 
         <div class="centrado">
-          <button
-            type="button"
-            class="btn-guardar"
-            onclick="guardarYMostrarInstrucciones()"
-          >
+          <button type="button" class="btn-guardar" id="btnContinuar">
             Continuar
           </button>
         </div>
@@ -117,56 +112,59 @@
       </div>
     </div>
 
-    <script type="module">
-      window.abrirCalendario = function () {
+    <!-- Scripts sin módulos -->
+    <script src="./js/datos-clasico.js"></script>
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        cargarDatosGuardados();
+
+        document.getElementById("btnContinuar").onclick = function () {
+          const data = {
+            fecha: document.getElementById("fecha").value,
+            nombre: document.getElementById("nombre").value.trim(),
+            sexo: document.getElementById("sexo").value,
+            procedencia: document.getElementById("procedencia").value.trim(),
+            id: document.getElementById("id").value.trim(),
+          };
+
+          if (
+            !data.fecha ||
+            !data.nombre ||
+            !data.sexo ||
+            !data.procedencia ||
+            !data.id
+          ) {
+            alert("Por favor completa todos los campos.");
+            return;
+          }
+
+          guardarRegistro(data);
+          document.getElementById("formulario-registro").style.display = "none";
+          document.getElementById("popup-instrucciones").style.display = "flex";
+        };
+      });
+
+      function abrirCalendario() {
         const fecha = document.getElementById("fecha");
         if (fecha.showPicker) {
-          fecha.showPicker(); // Función moderna
+          fecha.showPicker();
         } else {
-          fecha.focus(); // Fallback para navegadores sin showPicker
+          fecha.focus();
         }
-      };
-      import { guardarRegistro, cargarDatosGuardados } from "./js/datos.js";
-      cargarDatosGuardados(); // ← Agregado
+      }
 
-      window.cerrarAsentimiento = function () {
+      function cerrarAsentimiento() {
         document.getElementById("popup-asentimiento").style.display = "none";
         document.getElementById("formulario-registro").style.display = "block";
-      };
+      }
 
-      window.guardarYMostrarInstrucciones = function () {
-        const data = {
-          fecha: document.getElementById("fecha").value,
-          nombre: document.getElementById("nombre").value.trim(),
-          sexo: document.getElementById("sexo").value,
-          procedencia: document.getElementById("procedencia").value.trim(),
-          id: document.getElementById("id").value.trim(),
-        };
-
-        if (
-          !data.fecha ||
-          !data.nombre ||
-          !data.sexo ||
-          !data.procedencia ||
-          !data.id
-        ) {
-          alert("Por favor completa todos los campos.");
-          return;
-        }
-
-        guardarRegistro(data);
-        document.getElementById("formulario-registro").style.display = "none";
-        document.getElementById("popup-instrucciones").style.display = "flex";
-      };
-
-      window.iniciarOrientacion = function () {
-        window.location.href = "modulos/orientacion.html";
-      };
-    </script>
-    <script>
       function mostrarVideoNoAcepto() {
         document.getElementById("popup-asentimiento").style.display = "none";
         document.getElementById("video-noacepto").style.display = "block";
+      }
+
+      function iniciarOrientacion() {
+        window.location.href = "modulos/orientacion.html";
       }
     </script>
   </body>
